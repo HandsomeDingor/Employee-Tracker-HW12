@@ -1,10 +1,10 @@
-INSERT INTO department (department_name)
+INSERT INTO departments (department_name)
 VALUES ("engineering"),
     ("finance & Accounting"),
     ("sales & marketing"),
     ("Legal");
 
-SELECT * FROM department;
+SELECT * FROM departments;
 
 INSERT INTO roles (title, salary, department_id)
 VALUES ("software engineer", 120000, 1),
@@ -18,11 +18,11 @@ VALUES ("software engineer", 120000, 1),
 
 SELECT * FROM roles;
 
-INSERT INTO employee (first_name, last_name, role_id, manager_id)
+INSERT INTO employees (first_name, last_name, role_id, manager_id)
 VALUES ("Mike", "Chan", 3, NULL),
-    ("Tom", "Allen", 3, 1),
-    ("Kevin", "Tupik", 1, 2),
+    ("Tom", "Allen", 5, 1),
+    ("Kevin", "Tupik", 2, 2),
     ("Sarah", "Singh", 4, 2),
     ("JunJie", "Wu", 1, 1);
 
-SELECT * FROM employee;
+SELECT * FROM employees;
