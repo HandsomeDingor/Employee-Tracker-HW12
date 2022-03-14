@@ -2,7 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# HEROKU LIVE LINK: 
 # GITHUB LINK: 
 
 ## Table of Contents
@@ -26,7 +25,9 @@ N/A
 ## [Installation](#table-of-contents)
 * vs code 
 * node.js
-* Express
+* Mysql2
+* Inquirer
+* console.table
 
 ## [Usage](#table-of-contents)
 N/A
@@ -83,13 +84,16 @@ THEN I am prompted to select an employee to update and their new role and this i
 * JavaScript
 * node.js
 * vs code 
-* Express
-* Html
-* CSS
 
 ## [Demo-Vide](#table-of-contents)
 ## The following video demonstrates the application functionality:
-
+https://www.youtube.com/watch?v=7dyP4RBjLy0
 
 ## [Demo-Output](#table-of-contents)
 ## The demo README on dist file will look like the below:
+<img width="604" alt="Screen Shot 2022-03-13 at 9 45 09 PM" src="https://user-images.githubusercontent.com/94802639/158090978-f281e9cf-781d-4e40-b562-df3c53609286.png">
+<img width="482" alt="Screen Shot 2022-03-13 at 9 45 22 PM" src="https://user-images.githubusercontent.com/94802639/158090980-0d5d13ce-b039-4c28-a13b-460822329c49.png">
+<img width="421" alt="Screen Shot 2022-03-13 at 9 45 34 PM" src="https://user-images.githubusercontent.com/94802639/158090986-05ba515f-f1a3-4e53-a6ea-5ffa33b2f90f.png">
+<img width="712" alt="Screen Shot 2022-03-13 at 9 45 46 PM" src="https://user-images.githubusercontent.com/94802639/158090987-e1c75f4a-2a00-4874-a59a-c23e065194ca.png">
+<img width="469" alt="Screen Shot 2022-03-13 at 9 46 00 PM" src="https://user-images.githubusercontent.com/94802639/158090990-1c1e73e4-78e6-465d-8993-463222a32841.png">
+

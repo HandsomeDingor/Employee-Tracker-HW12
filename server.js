@@ -9,6 +9,7 @@ db.connect(err => {
   start();
   getDepartments();
   getRoles();
+  getEmployees();
 
 });
 
@@ -41,7 +42,7 @@ function start() {
         break;
     }
   });
-}
+};
 
 
 
@@ -50,7 +51,7 @@ function views() {
     type: "list",
     name: "viewChoice",
     message: "What would you like to view?",
-    choices: ["Departments", "Roles", "Employees", "Exit"]
+    choices: ["Departments", "Roles", "Employees", "ALL","Exit"]
   }]).then(answer => {
     switch (answer.viewChoice) {
       case "Departments":
@@ -63,6 +64,10 @@ function views() {
 
       case "Employees":
         viewEmployees();
+        break;
+
+      case "ALL":
+        viewAll();
         break;
 
       case "Exit":
@@ -81,7 +86,7 @@ function viewDepartments() {
     for (i = 0; i < res.length; i++) {
       newArry.push(res[i].department_name);
     };
-    
+
     start();
   });
 };
@@ -101,6 +106,26 @@ function viewEmployees() {
     start();
   });
 
+};
+
+function viewAll() {
+  console.log('Showing all employees...\n');
+  let sql = `SELECT employees.id, 
+  employees.first_name, 
+  employees.last_name, 
+  roles.title, 
+  departments.department_name AS 'department', 
+  roles.salary,
+  employees.manager_id
+  FROM employees, roles, departments
+  WHERE departments.id = roles.department_id 
+  AND roles.id = employees.role_id`;
+
+  db.query(sql, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    start();
+  });
 };
 
 function adds() {
@@ -142,7 +167,7 @@ function addDepartments() {
     const sql = 'INSERT INTO departments (department_name) value (?)';
     db.query(sql, answer.addDepartments, (err, res) => {
       if (err) throw err;
-      console.log('You have added ${answer.addDepartments}.')
+      console.log('You have added' + answer.addDepartments)
       start();
     })
   });
@@ -166,15 +191,15 @@ function addRoles() {
       message: "Which is the role's department",
       choices: newArry
     }
-  ]).then(answer =>{
-    for (i = 0; i < newArry.length; i++){
-      if (departmentArray[i].department_name == answer.id){
+  ]).then(answer => {
+    for (i = 0; i < newArry.length; i++) {
+      if (departmentArray[i].department_name == answer.id) {
         answer.id = departmentArray[i].id
       }
     }
     const sql = 'INSERT INTO roles (title, salary, department_id ) value (?,?,?)';
-    const params = [answer.title,answer.salary,answer.id];
-    db.query(sql, params, (err, res)=>{
+    const params = [answer.title, answer.salary, answer.id];
+    db.query(sql, params, (err, res) => {
       if (err) throw err;
       console.log('New role added: ' + answer.title)
       start();
@@ -204,37 +229,103 @@ function addEmployees() {
       type: "list",
       name: "manager_id",
       message: "Which is the employee's manager's name",
-      choices: ["Mike Chan", "Tom Allen", "Kevin Tupik", "Apple NAT", "Jason Ice","NULL"]
+      choices: ["Mike Chan", "Tom Allen", "Kevin Tupik", "Apple NAT", "Jason Ice", "NULL"]
 
     }
-  ]).then(answer =>{
-    for (i = 0; i < newRolesArry.length; i++){
-      if (roleArray[i].title == answer.role_id){
+  ]).then(answer => {
+    for (i = 0; i < newRolesArry.length; i++) {
+      if (roleArray[i].title == answer.role_id) {
         answer.role_id = roleArray[i].id;
       }
     }
-    if (answer.manager_id === "Tom Allen"){
-       answer.manager_id = 3;
+    if (answer.manager_id === "Tom Allen") {
+      answer.manager_id = 3;
     }
-    else if (answer.manager_id === "Kevin Tupik"){
-       answer.manager_id = 5;
+    else if (answer.manager_id === "Kevin Tupik") {
+      answer.manager_id = 5;
     }
-    else if (answer.manager_id === "Apple NAT"){
-       answer.manager_id= 6;
+    else if (answer.manager_id === "Apple NAT") {
+      answer.manager_id = 6;
     }
-    else if (answer.manager_id === "Jason Ice"){
-       answer.manager_id = 9;
-    }else { answer.manager_id = 'NULL'}
+    else if (answer.manager_id === "Jason Ice") {
+      answer.manager_id = 9;
+    } else { answer.manager_id = "NULL" }
 
     const sql = 'INSERT INTO employees (first_name, last_name, role_id, manager_id) value (?,?,?,?)';
     const params = [answer.first_name, answer.last_name, answer.role_id, answer.manager_id];
-    db.query(sql, params, (err, res)=>{
+    db.query(sql, params, (err, res) => {
       if (err) throw err;
-      console.log('New employee added: ' + answer.first_name +''+ answer.last_name)
+      console.log('New employee added: ' + answer.first_name + '' + answer.last_name)
       start();
     })
   })
 };
+
+function updates() {
+  inquirer.prompt({
+    type: "list",
+    name: "choices",
+    message: "What do you want to update?",
+    choices: ["employee's role", "employee's manager", "Exit"]
+  }).then(answer => {
+    switch (answer.choices) {
+      case "employee's role":
+        updateRole();
+        break;
+
+      case "employee's manager":
+        updateManager();
+        break;
+
+      case "Exit":
+        db.end();
+        break;
+    }
+  });
+}
+
+function updateRole() {
+  inquirer.prompt([
+    {
+      type: "list",
+      name: "employee",
+      message: "Which employee would you like to update?",
+      choices: newEmployeesArry
+    },
+    {
+      type: "list",
+      name: "updateRoles",
+      message: "Which Role would you like to update?",
+      choices: newRolesArry
+    }
+  ]).then(answer => {
+    for (i = 0; i < newEmployeesArry.length; i++) {
+      if (newEmployeesArry[i].name == answer.employee) {
+        answer.employee = newEmployeesArry[i].id;
+      }
+    };
+    for (i = 0; i < newRolesArry.length; i++) {
+      if (roleArray[i].title == answer.updateRoles) {      
+
+        answer.updateRoles = roleArray[i].id;
+
+      }
+    };
+    const sql = `UPDATE employees SET employees.role_id = ? WHERE employees.id = ?`;
+    const params = [answer.updateRoles, answer.employee];
+    db.query(sql, params, (err, res)=>{
+      if (err) throw err;
+      console.log('New role update: ' + answer.updateRoles)
+      start();
+    })
+  })
+};
+
+function updateManager() {
+
+};
+
+
 
 
 const newArry = [];
@@ -242,7 +333,7 @@ let departmentArray;
 
 function getDepartments() {
   db.query("SELECT * FROM departments", (err, res) => {
-    if (err) throw err;    
+    if (err) throw err;
     departmentArray = res;
     for (i = 0; i < res.length; i++) {
       newArry.push(res[i].department_name);
@@ -257,7 +348,7 @@ let roleArray;
 
 function getRoles() {
   db.query("SELECT * FROM Roles", (err, res) => {
-    if (err) throw err;    
+    if (err) throw err;
     roleArray = res;
     for (i = 0; i < res.length; i++) {
       newRolesArry.push(res[i].title);
@@ -265,3 +356,30 @@ function getRoles() {
   });
 };
 
+const newEmployeesArry = [];
+let employeeArray;
+
+function getEmployees() {
+ 
+  db.query(`SELECT employees.id, 
+  employees.first_name, 
+  employees.last_name, 
+  roles.title, 
+  departments.department_name AS 'department', 
+  roles.salary
+  FROM employees, roles, departments
+  WHERE departments.id = roles.department_id 
+  AND roles.id = employees.role_id`, (err, res) => {
+    if (err) throw err;
+    employeeArray = res;
+    for (i = 0; i < res.length; i++) {
+      newEmployeesArry.push({
+        name: res[i].first_name + " " + res[i].last_name,
+        id: res[i].id
+      });
+    };
+    // console.log(newEmployeesArry);
+    // console.log(employeeArray);
+
+  });
+};
