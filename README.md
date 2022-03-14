@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-# GITHUB LINK: 
+# GITHUB LINK: https://github.com/HandsomeDingor/Employee-Tracker-HW12
 
 ## Table of Contents
 
@@ -20,7 +20,7 @@
 * [Demo-output](#demo-output)
 
 ## [Description](#table-of-contents)
-N/A
+Using node.js MySql2 as database to create a Empolyee tacker app.
 
 ## [Installation](#table-of-contents)
 * vs code 
